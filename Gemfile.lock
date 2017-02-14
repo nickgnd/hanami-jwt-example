@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    bcrypt (3.1.11)
     concurrent-ruby (1.0.4)
     dotenv (2.2.0)
     dry-configurable (0.5.0)
@@ -129,6 +130,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   dotenv (~> 2.0)
   hanami (= 1.0.0.beta1)
   hanami-model (~> 1.0.0.beta1)
