@@ -1,11 +1,11 @@
 # Require this file for feature tests
 require_relative './spec_helper'
-
-require 'capybara'
-require 'capybara/dsl'
-
-Capybara.app = Hanami.app
+require 'rack/test'
 
 class MiniTest::Spec
-  include Capybara::DSL
+  include Rack::Test::Methods
+
+  def app
+    Hanami.app
+  end
 end

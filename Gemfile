@@ -18,7 +18,7 @@ end
 
 group :test do
   gem 'minitest'
-  gem 'capybara'
+  gem 'rack-test'
 end
 
 group :production do
