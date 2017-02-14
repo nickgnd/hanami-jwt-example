@@ -1,0 +1,4 @@
+project=inventory
+architecture=container
+test=minitest
+template=erb
