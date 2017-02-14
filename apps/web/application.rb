@@ -78,7 +78,10 @@ module Web
 
       # Configure Rack middleware for this application
       #
-      # middleware.use Rack::Protection
+      middleware.use Warden::Manager do |manager|
+        manager.default_strategies :authentication_token
+        manager.failure_app = ->(_env) { [401, {}, ['Authentication failure']] }
+      end
 
       # Default format for the requests that don't specify an HTTP_ACCEPT header
       # Argument: A symbol representation of a mime type, default to :html
@@ -95,7 +98,7 @@ module Web
       # Argument: Symbol, which represent the format of the mime type (only `:json` is supported)
       #           Object, the parser
       #
-      # body_parsers :json
+      body_parsers :json
 
       # When it's true and the router receives a non-encrypted request (http),
       # it redirects to the secure equivalent resource (https). Default disabled.

@@ -8,6 +8,7 @@ gem 'pg'
 
 gem 'jwt'
 gem 'bcrypt', require: false
+gem 'warden'
 
 group :development do
   # Code reloading
