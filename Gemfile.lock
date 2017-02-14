@@ -84,6 +84,7 @@ GEM
       url_mount (~> 0.2.1)
     ice_nine (0.11.2)
     inflecto (0.0.2)
+    jwt (1.5.6)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     mime-types (3.1)
@@ -134,6 +135,7 @@ DEPENDENCIES
   dotenv (~> 2.0)
   hanami (= 1.0.0.beta1)
   hanami-model (~> 1.0.0.beta1)
+  jwt
   minitest
   pg
   rack-test

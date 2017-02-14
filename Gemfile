@@ -6,6 +6,7 @@ gem 'hanami-model', '~> 1.0.0.beta1'
 
 gem 'pg'
 
+gem 'jwt'
 gem 'bcrypt', require: false
 
 group :development do
