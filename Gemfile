@@ -4,7 +4,7 @@ gem 'rake'
 gem 'hanami',       '1.0.0.beta1'
 gem 'hanami-model', '~> 1.0.0.beta1'
 
-gem 'sqlite3'
+gem 'pg'
 
 group :development do
   # Code reloading
