@@ -11,7 +11,15 @@ module Web
 
         expose :jwt
 
+        params do
+          required(:user).schema do
+            required(:email).filled(:str?, format?: /@/)
+            required(:password).filled(:str?)
+          end
+        end
+
         def call(params)
+          halt 401 unless params.valid?
           email = params.get(:user, :email)
           password = params.get(:user, :password)
 

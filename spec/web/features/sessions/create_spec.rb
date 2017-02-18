@@ -28,4 +28,9 @@ describe 'POST /sessions api' do
     post '/sessions', { user: { email: 'test@email.com', password: 'wrong_password' }}
     assert_equal 401, last_response.status
   end
+
+  it 'responds with 401 without required params' do
+    post '/sessions', { user: { password: 'secret' }}
+    assert_equal 401, last_response.status
+  end
 end
