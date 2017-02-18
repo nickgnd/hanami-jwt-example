@@ -1,8 +1,11 @@
 require 'spec_helper'
 require_relative '../../../../apps/web/controllers/items/index'
+require_relative '../../../support/authentication'
 
 describe Web::Controllers::Items::Index do
-  let(:action) { Web::Controllers::Items::Index.new }
+  include Spec::Support::Authentication
+
+  let(:action) { Web::Controllers::Items::Index.new(authenticator: authenticator) }
   let(:params) { Hash[] }
 
   it 'is successful' do
