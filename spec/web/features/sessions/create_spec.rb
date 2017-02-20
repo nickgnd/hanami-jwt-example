@@ -4,7 +4,7 @@ require 'bcrypt'
 describe 'POST /sessions api' do
 
   before do
-    password_digest = BCrypt::Password.create('secret')
+    password_digest = BCrypt::Password.create('secret', cost: 1)
     user = User.new(email: 'test@email.com', password_digest: password_digest)
     UserRepository.new.create(user)
   end
@@ -13,9 +13,13 @@ describe 'POST /sessions api' do
     UserRepository.new.clear
   end
 
+  it 'responds with 201 with the right credentials' do
+    post '/sessions', { user: { email: 'test@email.com', password: 'secret' }}
+    assert_equal 201, last_response.status
+  end
+
   it 'responds with auth_token with the right credentials' do
     post '/sessions', { user: { email: 'test@email.com', password: 'secret' }}
-    assert last_response.ok?
     refute_nil JSON.parse(last_response.body).fetch('auth_token', nil)
   end
 

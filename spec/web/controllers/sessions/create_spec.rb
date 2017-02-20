@@ -1,15 +1,67 @@
-# require 'spec_helper'
-# require_relative '../../../../apps/web/controllers/sessions/create'
-# require_relative '../../../support/authentication'
+require 'spec_helper'
+require_relative '../../../../apps/web/controllers/sessions/create'
 
-# describe Web::Controllers::Sessions::Create do
-#   include Spec::Support::Authentication
+class FakeBcrypt
+  class PasswordTruthy
+    def initialize(_password_digest)
+    end
 
-#   let(:action) { Web::Controllers::Sessions::Create.new(authenticator: authenticator) }
-#   let(:params) { Hash[] }
+    def is_password?(_unencrypted_password)
+      true
+    end
+  end
 
-#   it 'is successful' do
-#     response = action.call(params)
-#     response[0].must_equal 200
-#   end
-# end
+  class PasswordFalsy
+    def initialize(_password_digest)
+    end
+
+    def is_password?(_unencrypted_password)
+      false
+    end
+  end
+end
+
+class FakeJwtIssuer
+  def self.encode(_user_id)
+    '12345678'
+  end
+end
+
+describe Web::Controllers::Sessions::Create do
+
+  let(:params) { { user: { email: 'test@example.com', password: 'secret' }} }
+
+  before do
+    password_digest = BCrypt::Password.create('secret', cost: 1)
+    user = User.new(email: 'test@example.com', password_digest: password_digest)
+    UserRepository.new.create(user)
+  end
+
+  after do
+    UserRepository.new.clear
+  end
+
+  describe 'with valid credentials' do
+    let(:action) { Web::Controllers::Sessions::Create.new(
+      crypt_service: FakeBcrypt::PasswordTruthy,
+      jwt_issuer_service: FakeJwtIssuer
+    )}
+
+    it 'is successful with valid credentials' do
+      response = action.call(params)
+      response[0].must_equal 201
+    end
+  end
+
+  describe 'with invalid credentials' do
+    let(:action) { Web::Controllers::Sessions::Create.new(
+      crypt_service: FakeBcrypt::PasswordFalsy,
+      jwt_issuer_service: FakeJwtIssuer
+    )}
+
+    it 'returns unathorized' do
+      response = action.call(params)
+      response[0].must_equal 401
+    end
+  end
+end
