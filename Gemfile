@@ -4,6 +4,13 @@ gem 'rake'
 gem 'hanami',       '1.0.0.beta1'
 gem 'hanami-model', '~> 1.0.0.beta1'
 
+# TODO: remove me at the next Hanami release
+#
+# Use the master branch of 'hanami-router' gem to fix issue with nested params
+# https://github.com/hanami/controller/issues/214
+#
+gem 'hanami-router', git: 'https://github.com/hanami/router', branch: 'master'
+
 gem 'pg'
 
 gem 'jwt'

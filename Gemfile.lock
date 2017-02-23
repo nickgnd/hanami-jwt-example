@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/hanami/router
+  revision: 795a06a9cdd477f20d5083ca76279030cbaa716f
+  branch: master
+  specs:
+    hanami-router (1.0.0.beta1)
+      hanami-utils (~> 1.0.0.beta1)
+      http_router (= 0.11.2)
+      rack (~> 2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -68,10 +78,6 @@ GEM
       hanami-utils (~> 1.0.0.beta)
       rom-repository (~> 1.0)
       rom-sql (~> 1.0)
-    hanami-router (1.0.0.beta1)
-      hanami-utils (~> 1.0.0.beta1)
-      http_router (= 0.11.2)
-      rack (~> 2.0)
     hanami-utils (1.0.0.beta1)
     hanami-validations (1.0.0.beta1)
       dry-validation (~> 0.10)
@@ -137,6 +143,7 @@ DEPENDENCIES
   dotenv (~> 2.0)
   hanami (= 1.0.0.beta1)
   hanami-model (~> 1.0.0.beta1)
+  hanami-router!
   jwt
   minitest
   pg
