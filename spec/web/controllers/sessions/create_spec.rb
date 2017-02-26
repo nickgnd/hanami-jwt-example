@@ -32,8 +32,7 @@ describe Web::Controllers::Sessions::Create do
   let(:params) { { user: { email: 'test@example.com', password: 'secret' }} }
 
   before do
-    password_digest = BCrypt::Password.create('secret', cost: 1)
-    user = User.new(email: 'test@example.com', password_digest: password_digest)
+    user = User.new(email: 'test@example.com', password_digest: 'password_digest')
     UserRepository.new.create(user)
   end
 
@@ -42,24 +41,39 @@ describe Web::Controllers::Sessions::Create do
   end
 
   describe 'with valid credentials' do
+
     let(:action) { Web::Controllers::Sessions::Create.new(
       crypt_service: FakeBcrypt::PasswordTruthy,
       jwt_issuer_service: FakeJwtIssuer
     )}
 
-    it 'is successful with valid credentials' do
+    it 'is successful' do
       response = action.call(params)
       response[0].must_equal 201
     end
   end
 
+  describe 'with missing params' do
+
+    let(:action) { Web::Controllers::Sessions::Create.new(
+      crypt_service: FakeBcrypt::PasswordTruthy,
+      jwt_issuer_service: FakeJwtIssuer
+    )}
+
+    it 'returns unauthorized' do
+      response = action.call(params.merge(user: {}))
+      response[0].must_equal 401
+    end
+  end
+
   describe 'with invalid credentials' do
+
     let(:action) { Web::Controllers::Sessions::Create.new(
       crypt_service: FakeBcrypt::PasswordFalsy,
       jwt_issuer_service: FakeJwtIssuer
     )}
 
-    it 'returns unathorized' do
+    it 'returns unauthorized' do
       response = action.call(params)
       response[0].must_equal 401
     end

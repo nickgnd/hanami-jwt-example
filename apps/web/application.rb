@@ -80,7 +80,17 @@ module Web
       #
       middleware.use Warden::Manager do |manager|
         manager.default_strategies :authentication_token
-        manager.failure_app = ->(_env) { [401, {}, ['Authentication failure']] }
+        manager.failure_app = ->(_env) {
+          [
+            401,
+            {
+              'Access-Control-Allow-Origin'  => CorsSettings::CORS_ALLOW_ORIGIN,
+              'Access-Control-Allow-Methods' => CorsSettings::CORS_ALLOW_METHODS,
+              'Access-Control-Allow-Headers' => CorsSettings::CORS_ALLOW_HEADERS
+            },
+            [ 'Authentication failure' ]
+          ]
+        }
       end
 
       # Default format for the requests that don't specify an HTTP_ACCEPT header
@@ -255,6 +265,7 @@ module Web
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
         include Web::Controllers::Authentication
+        include Web::Controllers::CorsHeaders
       end
 
       # Configure the code that will yield each time Web::View is included
