@@ -1,4 +1,4 @@
-require 'features_helper'
+require 'requests_helper'
 require 'bcrypt'
 require_relative '../../../support/shared_examples/requests/cors_headers_spec'
 

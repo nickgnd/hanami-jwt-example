@@ -1,4 +1,4 @@
-require 'features_helper'
+require 'requests_helper'
 
 describe 'options request to generic route' do
 
