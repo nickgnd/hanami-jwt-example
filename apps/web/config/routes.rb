@@ -7,6 +7,8 @@ get '/items', to: 'items#index'
 
 post '/sessions', to: 'sessions#create'
 
+post '/registration', to: 'users#registration'
+
 # CORS
 #
 cors_handler = ->(env) {
