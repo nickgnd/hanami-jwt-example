@@ -17,6 +17,8 @@ gem 'jwt'
 gem 'bcrypt', require: false
 gem 'warden'
 
+gem 'transproc'
+
 group :development do
   # Code reloading
   # See: http://hanamirb.org/guides/projects/code-reloading

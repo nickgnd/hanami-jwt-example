@@ -150,6 +150,7 @@ DEPENDENCIES
   rack-test
   rake
   shotgun
+  transproc
   warden
 
 BUNDLED WITH

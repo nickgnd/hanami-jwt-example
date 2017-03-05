@@ -6,7 +6,7 @@ class FakeBcrypt
     def initialize(_password_digest)
     end
 
-    def is_password?(_unencrypted_password)
+    def ==(_unencrypted_password)
       true
     end
   end
@@ -15,7 +15,7 @@ class FakeBcrypt
     def initialize(_password_digest)
     end
 
-    def is_password?(_unencrypted_password)
+    def ==(_unencrypted_password)
       false
     end
   end

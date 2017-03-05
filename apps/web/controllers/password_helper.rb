@@ -13,14 +13,11 @@ module Web
       end
 
       def check_password(password_digest, unencrypted_password)
-        crypt_service.new(password_digest).is_password?(unencrypted_password)
+        crypt_service.new(password_digest) == unencrypted_password
       end
 
       def crypt_service
-        @crypt_service || begin
-          require 'bcrypt'
-          ::BCrypt::Password
-        end
+        @crypt_service || ::Password
       end
     end
   end
