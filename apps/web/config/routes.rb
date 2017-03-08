@@ -15,9 +15,9 @@ cors_handler = ->(env) {
   [
     204,
     {
-      'Access-Control-Allow-Origin'  => CorsSettings::CORS_ALLOW_ORIGIN,
-      'Access-Control-Allow-Methods' => CorsSettings::CORS_ALLOW_METHODS,
-      'Access-Control-Allow-Headers' => CorsSettings::CORS_ALLOW_HEADERS
+      'Access-Control-Allow-Origin'  => Settings::Cors::CORS_ALLOW_ORIGIN,
+      'Access-Control-Allow-Methods' => Settings::Cors::CORS_ALLOW_METHODS,
+      'Access-Control-Allow-Headers' => Settings::Cors::CORS_ALLOW_HEADERS
     },
     []
   ]
