@@ -8,7 +8,7 @@ class AuthenticationJwtStrategy < ::Warden::Strategies::Base
 
   def authenticate!
     claims = decoded_token
-    if claims && user = ::UserRepository.new.find(claims.fetch('user_id'))
+    if claims && user = ::UserRepository.new.find(claims.fetch('user_id', nil))
       success!(user)
     else
       fail!

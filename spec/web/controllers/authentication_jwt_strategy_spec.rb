@@ -39,7 +39,7 @@ describe AuthenticationJwtStrategy do
     end
   end
 
-  it '.authenticate! returns success with valid jwt' do
+  it '.authenticate! returns :success with valid jwt' do
     obj = ::AuthenticationJwtStrategy.new(nil)
     env = { 'HTTP_AUTHORIZATION' => "Bearer #{jwt}" }
 
@@ -48,7 +48,7 @@ describe AuthenticationJwtStrategy do
     end
   end
 
-  it '.authenticate! returns fail with invalid header attributes' do
+  it '.authenticate! returns :failure with invalid header attributes' do
     obj = ::AuthenticationJwtStrategy.new(nil)
     env = { 'HTTP_AUTHORIZATION' => 'Bearer invalid_jwt1232131' }
 
@@ -57,9 +57,20 @@ describe AuthenticationJwtStrategy do
     end
   end
 
-  it '.authenticate! returns fail with invalid payload information (user_id)' do
+  it '.authenticate! returns :failure with invalid user_id in jwt_payload' do
     obj = ::AuthenticationJwtStrategy.new(nil)
     wrong_jwt = JwtIssuer.encode({ user_id: 0 })
+    env = { 'HTTP_AUTHORIZATION' => "Bearer #{wrong_jwt}" }
+
+
+    obj.stub :env, env do
+      assert_equal :failure, obj.authenticate!
+    end
+  end
+
+  it '.authenticate! returns :failure with missing user_id in jwt payload' do
+    obj = ::AuthenticationJwtStrategy.new(nil)
+    wrong_jwt = JwtIssuer.encode({})
     env = { 'HTTP_AUTHORIZATION' => "Bearer #{wrong_jwt}" }
 
 
