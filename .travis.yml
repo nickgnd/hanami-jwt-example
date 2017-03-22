@@ -1,0 +1,17 @@
+language: ruby
+cache: bundler
+rvm:
+  - 2.3.0
+  - 2.4.0
+
+services:
+  - postgresql
+
+before_script:
+  - bundle exec hanami db prepare
+
+script:
+  - 'bundle exec rake test'
+
+notifications:
+  email: false
