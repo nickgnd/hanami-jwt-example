@@ -14,6 +14,16 @@ class UserRegisterFake
   UserStruct = Struct.new('User', :user)
 end
 
+# class UserRepoFake
+#   def initialize(users = [])
+#     @users = users
+#   end
+
+#   def by_email(email)
+#     @users.select { |user| user.fetch(:email) == email }
+#   end
+# end
+
 
 describe Web::Controllers::Users::Registration do
   let(:action) { Web::Controllers::Users::Registration.new(interactor: UserRegisterFake) }
@@ -22,6 +32,11 @@ describe Web::Controllers::Users::Registration do
   }
 
   describe 'with valid params' do
+
+    after do
+      UserRepository.new.clear
+    end
+
     it 'is successful' do
       response = action.call(params)
       response[0].must_equal 201
@@ -31,6 +46,22 @@ describe Web::Controllers::Users::Registration do
   describe 'with invalid params' do
     it 'it returns 422' do
       response = action.call({})
+      response[0].must_equal 422
+    end
+  end
+
+  describe 'with an email already registered' do
+
+    before do
+      UserRegister.new(params.fetch(:user)).call
+    end
+
+    after do
+      UserRepository.new.clear
+    end
+
+    it 'it returns 422' do
+      response = action.call(params)
       response[0].must_equal 422
     end
   end

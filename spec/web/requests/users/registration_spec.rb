@@ -46,4 +46,24 @@ describe 'POST /registration api' do
       assert_equal 422, last_response.status
     end
   end
+
+  describe 'with email already registered' do
+    include Spec::Support::SharedExamples::Requests::CorsHeadersSpec
+
+    before do
+      UserRepository.new.create(email: 'test@email.com', password_digest: 'super_secret_hash')
+
+      header 'Accept', 'application/json'
+      header 'Content-Type', 'application/json'
+      post '/registration', JSON.generate(params)
+    end
+
+    after do
+      UserRepository.new.clear
+    end
+
+    it 'responds with 422' do
+      assert_equal 422, last_response.status
+    end
+  end
 end

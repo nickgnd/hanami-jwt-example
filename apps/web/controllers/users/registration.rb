@@ -1,4 +1,3 @@
-# TODO: validate email uniqueness
 # TODO: extract user presenter
 
 module Web::Controllers::Users
@@ -7,8 +6,19 @@ module Web::Controllers::Users
     include Web::Controllers::Authentication::Skip
 
     params do
+      configure do
+        def valid_format?(email)
+          email =~ /@/
+        end
+
+        # TODO: extract an interactor
+        def unique?(email)
+          UserRepository.new.by_email(email).nil?
+        end
+      end
+
       required(:user).schema do
-        required(:email).filled(:str?, format?: /@/)
+        required(:email) { filled? & str? & valid_format? & unique? }
         required(:password).filled(:str?).confirmation
       end
     end
