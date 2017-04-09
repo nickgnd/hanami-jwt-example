@@ -1,1 +1,2 @@
-Hanami::Utils.require!("#{__dir__}/inventory")
+module Inventory
+end

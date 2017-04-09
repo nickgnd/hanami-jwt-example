@@ -13,7 +13,7 @@ Main features:
 Developed and tested with:
 
 - Ruby v2.3.1
-- Hanami v1.0.0beta2
+- Hanami v1.0
 
 ## Try it yourself
 
