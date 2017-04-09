@@ -28,7 +28,7 @@ Hanami.configure do
   end
 
   mailer do
-    root 'lib/inventory/mailers'
+    root Hanami.root.join('lib', 'inventory', 'mailers')
 
     # See http://hanamirb.org/guides/mailers/delivery
     delivery :test
@@ -36,7 +36,7 @@ Hanami.configure do
 
   environment :development do
     # See: http://hanamirb.org/guides/projects/logging
-    logger level: :debug
+    logger level: :info
   end
 
   environment :production do
