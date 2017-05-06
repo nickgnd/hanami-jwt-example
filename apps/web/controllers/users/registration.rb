@@ -1,3 +1,4 @@
+# TODO: return a valuable error message when user registration fails
 # TODO: extract user presenter
 
 module Web::Controllers::Users
@@ -6,19 +7,8 @@ module Web::Controllers::Users
     include Web::Controllers::Authentication::Skip
 
     params do
-      configure do
-        def valid_format?(email)
-          email =~ /@/
-        end
-
-        # TODO: extract an interactor
-        def unique?(email)
-          UserRepository.new.by_email(email).nil?
-        end
-      end
-
       required(:user).schema do
-        required(:email) { filled? & str? & valid_format? & unique? }
+        required(:email).filled(:str?, format?: /@/)
         required(:password).filled(:str?).confirmation
       end
     end
@@ -33,7 +23,11 @@ module Web::Controllers::Users
       halt 422 unless params.valid?
 
       result = @interactor.new(params.get(:user)).call
-      status 201, JSON.generate(presenter(result.user.to_h))
+      if result.successful?
+        status 201, JSON.generate(presenter(result.user.to_h))
+      else
+        halt 422
+      end
     end
 
     private

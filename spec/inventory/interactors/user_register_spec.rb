@@ -3,15 +3,22 @@ require 'spec_helper'
 describe UserRegister do
 
   let(:user_attributes) { { email: 'nicolo@example.com', password: 'secret'} }
-  let(:interactor) { UserRegister.new(user_attributes) }
 
   after do
     UserRepository.new.clear
   end
 
-  it '.call encrypt the password and persist the user in db' do
-    user = interactor.call.user
+  it 'halts the flow if the email provided is already taken' do
+    UserRepository.new.create(email: 'nicolo@example.com', password_digest: 'digest_password_231312312')
+    result = UserRegister.new(user_attributes).call
 
-    refute_nil UserRepository.new.find user.id
+    refute result.successful?
+  end
+
+  it 'encrypts the password and persists the user in db' do
+    result = UserRegister.new(user_attributes).call
+    user = result.user
+
+    refute_nil UserRepository.new.find(user.id)
   end
 end
