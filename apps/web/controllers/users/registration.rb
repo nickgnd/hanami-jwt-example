@@ -1,4 +1,4 @@
-# TODO: validate email uniqueness
+# TODO: return a valuable error message when user registration fails
 # TODO: extract user presenter
 
 module Web::Controllers::Users
@@ -23,7 +23,11 @@ module Web::Controllers::Users
       halt 422 unless params.valid?
 
       result = @interactor.new(params.get(:user)).call
-      status 201, JSON.generate(presenter(result.user.to_h))
+      if result.successful?
+        status 201, JSON.generate(presenter(result.user.to_h))
+      else
+        halt 422
+      end
     end
 
     private
